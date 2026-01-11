@@ -115,7 +115,21 @@ export abstract class BaseBuilder {
       await esbuild.build({
         treeShaking: true,
         entryPoints: inputs,
-        plugins: [createDiscoverEntriesPlugin(state)],
+        plugins: [
+          {
+            name: 'markdown-loader',
+            setup(build) {
+              build.onLoad({ filter: /\.md$/ }, async (args) => {
+                const contents = await readFile(args.path, 'utf8');
+                return {
+                  contents: `export default ${JSON.stringify(contents)}`,
+                  loader: 'js',
+                };
+              });
+            },
+          },
+          createDiscoverEntriesPlugin(state),
+        ],
         platform: 'node',
         write: false,
         outdir,
@@ -345,6 +359,18 @@ export abstract class BaseBuilder {
       // occur in deeply nested function calls across multiple files.
       sourcemap: 'inline',
       plugins: [
+        {
+          name: 'markdown-loader',
+          setup(build) {
+            build.onLoad({ filter: /\.md$/ }, async (args) => {
+              const contents = await readFile(args.path, 'utf8');
+              return {
+                contents: `export default ${JSON.stringify(contents)}`,
+                loader: 'js',
+              };
+            });
+          },
+        },
         createSwcPlugin({
           mode: 'step',
           entriesToBundle: externalizeNonSteps
@@ -475,6 +501,18 @@ export abstract class BaseBuilder {
         '.cjs',
       ],
       plugins: [
+        {
+          name: 'markdown-loader',
+          setup(build) {
+            build.onLoad({ filter: /\.md$/ }, async (args) => {
+              const contents = await readFile(args.path, 'utf8');
+              return {
+                contents: `export default ${JSON.stringify(contents)}`,
+                loader: 'js',
+              };
+            });
+          },
+        },
         createSwcPlugin({
           mode: 'workflow',
           workflowManifest,
