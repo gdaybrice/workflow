@@ -1,3 +1,4 @@
+import type { Loader } from 'esbuild';
 import type { NextConfig } from 'next';
 import semver from 'semver';
 import { getNextBuilder } from './builder.js';
@@ -11,6 +12,7 @@ export function withWorkflow(
       ) => Promise<NextConfig>),
   {
     workflows,
+    esbuildLoaders,
   }: {
     workflows?: {
       local?: {
@@ -18,6 +20,8 @@ export function withWorkflow(
         dataDir?: string;
       };
     };
+    /** Custom esbuild loaders for non-standard file extensions (e.g., { '.md': 'text' }) */
+    esbuildLoaders?: Record<string, Loader>;
   } = {}
 ) {
   if (!process.env.VERCEL_DEPLOYMENT_ID) {
@@ -137,6 +141,7 @@ export function withWorkflow(
           'client-only',
           ...(nextConfig.serverExternalPackages || []),
         ],
+        esbuildLoaders,
       });
 
       await workflowBuilder.build();

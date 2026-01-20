@@ -42,6 +42,7 @@
     "@types/react-dom": "^19",
     "@vercel/blob": "2.0.0",
     "@workflow/world-postgres": "workspace:*",
+    "raw-loader": "4.0.2",
     "tailwindcss": "^4",
     "typescript": "catalog:"
   }

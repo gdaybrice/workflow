@@ -128,6 +128,7 @@ export abstract class BaseBuilder {
         logLevel: 'silent',
         // External packages that should not be bundled during discovery
         external: this.config.externalPackages || [],
+        loader: this.config.esbuildLoaders,
       });
     } catch (_) {}
 
@@ -364,6 +365,7 @@ export abstract class BaseBuilder {
         '.mjs',
         '.cjs',
       ],
+      loader: this.config.esbuildLoaders,
       // Inline source maps for better stack traces in step execution.
       // Steps execute in Node.js context and inline sourcemaps ensure we get
       // meaningful stack traces with proper file names and line numbers when errors
@@ -537,6 +539,7 @@ export abstract class BaseBuilder {
         '.mjs',
         '.cjs',
       ],
+      loader: this.config.esbuildLoaders,
       plugins: [
         createSwcPlugin({
           mode: 'workflow',
@@ -718,6 +721,7 @@ export const POST = workflowEntrypoint(workflowCode);`;
         '.mjs',
         '.cjs',
       ],
+      loader: this.config.esbuildLoaders,
       plugins: [createSwcPlugin({ mode: 'client' })],
     });
 

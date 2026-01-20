@@ -1,3 +1,5 @@
+import type { Loader } from 'esbuild';
+
 export const validBuildTargets = [
   'standalone',
   'vercel-build-output-api',
@@ -27,6 +29,9 @@ interface BaseWorkflowConfig {
 
   // Optional prefix for debug files (e.g., "_" for Astro to ignore them)
   debugFilePrefix?: string;
+
+  // Custom esbuild loaders for non-standard file extensions (e.g., { '.md': 'text' })
+  esbuildLoaders?: Record<string, Loader>;
 }
 
 /**
