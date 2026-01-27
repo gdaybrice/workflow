@@ -434,7 +434,7 @@ async function writeToolOutputToUI(
       const chunk: UIMessageChunk = {
         type: 'tool-output-available' as const,
         toolCallId: result.toolCallId,
-        output: JSON.stringify(result) ?? '',
+        output: result.output.value,
       };
       if (collectUIChunks) {
         chunks.push(chunk);
